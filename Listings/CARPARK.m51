@@ -1,0 +1,292 @@
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    06/20/2024  10:52:20  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.4.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\CARPARK.obj TO .\Objects\CARPARK PRINT (.\Listings\CARPARK.m51)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\CARPARK.obj (CARPARK)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C?CLDOPTR)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C?SLCMP)
+
+
+LINK MAP OF MODULE:  .\Objects\CARPARK (CARPARK)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     000BH     UNIT         ?DT?CARPARK
+            DATA    0013H     0004H     UNIT         _DATA_GROUP_
+            IDATA   0017H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     07FDH                  *** GAP ***
+            CODE    0800H     00CBH     UNIT         ?PR?CHECK?CARPARK
+            CODE    08CBH     00ABH     UNIT         ?CO?CARPARK
+            CODE    0976H     007FH     UNIT         ?PR?MAIN?CARPARK
+            CODE    09F5H     0043H     UNIT         ?C?LIB_CODE
+            CODE    0A38H     002DH     UNIT         ?PR?MDELAY?CARPARK
+            CODE    0A65H     0023H     UNIT         ?PR?_LCDDIS?CARPARK
+            CODE    0A88H     0019H     UNIT         ?PR?LCD_INIT?CARPARK
+            CODE    0AA1H     000FH     UNIT         ?PR?DELAY?CARPARK
+            CODE    0AB0H     000EH     UNIT         ?PR?_LCDCMD?CARPARK
+            CODE    0ABEH     000EH     UNIT         ?PR?_LCDDAT?CARPARK
+            CODE    0ACCH     000CH     UNIT         ?PR?SERIAL_INIT?CARPARK
+            CODE    0AD8H     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\CARPARK (CARPARK)
+
+
+SEGMENT                           DATA_GROUP 
+  +--> CALLED SEGMENT           START    LENGTH
+-----------------------------------------------
+?C_C51STARTUP                   -----    -----
+  +--> ?PR?MAIN?CARPARK
+
+?PR?MAIN?CARPARK                -----    -----
+  +--> ?PR?SERIAL_INIT?CARPARK
+  +--> ?PR?LCD_INIT?CARPARK
+  +--> ?CO?CARPARK
+  +--> ?PR?_LCDDIS?CARPARK
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  06/20/2024  10:52:20  PAGE 2
+
+
+  +--> ?PR?_LCDCMD?CARPARK
+  +--> ?PR?DELAY?CARPARK
+  +--> ?PR?CHECK?CARPARK
+
+?PR?LCD_INIT?CARPARK            -----    -----
+  +--> ?PR?_LCDCMD?CARPARK
+
+?PR?_LCDCMD?CARPARK             -----    -----
+  +--> ?PR?DELAY?CARPARK
+
+?PR?_LCDDIS?CARPARK             0013H    0004H
+  +--> ?PR?_LCDDAT?CARPARK
+
+?PR?_LCDDAT?CARPARK             -----    -----
+  +--> ?PR?DELAY?CARPARK
+
+?PR?CHECK?CARPARK               -----    -----
+  +--> ?PR?_LCDCMD?CARPARK
+  +--> ?CO?CARPARK
+  +--> ?PR?_LCDDIS?CARPARK
+  +--> ?PR?DELAY?CARPARK
+  +--> ?PR?MDELAY?CARPARK
+
+?PR?MDELAY?CARPARK              0013H    0002H
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\CARPARK (CARPARK)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        CARPARK
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  C:0A38H         PUBLIC        mdelay
+  C:0800H         PUBLIC        check
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  C:0AA1H         PUBLIC        delay
+  C:0ACCH         PUBLIC        serial_init
+  B:0098H.0       PUBLIC        RI
+  B:0098H.1       PUBLIC        TI
+  B:00A0H.1       PUBLIC        doorn
+  C:0976H         PUBLIC        main
+  D:0008H         PUBLIC        v1
+  D:0009H         PUBLIC        rfid
+  B:00A0H.0       PUBLIC        doorp
+  D:0099H         PUBLIC        SBUF
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  C:0A88H         PUBLIC        lcd_init
+  D:008DH         PUBLIC        TH1
+  B:00A0H.7       PUBLIC        en
+  B:0088H.6       PUBLIC        TR1
+  B:00A0H.5       PUBLIC        rs
+  B:00A0H.6       PUBLIC        rw
+  C:0AB0H         PUBLIC        _lcdcmd
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  06/20/2024  10:52:20  PAGE 3
+
+
+  C:0ABEH         PUBLIC        _lcddat
+  C:0A65H         PUBLIC        _lcddis
+  -------         PROC          MAIN
+  C:0976H         LINE#         28
+  C:0976H         LINE#         29
+  C:0976H         LINE#         30
+  C:097AH         LINE#         31
+  C:097DH         LINE#         32
+  C:0980H         LINE#         33
+  C:0989H         LINE#         34
+  C:098EH         LINE#         35
+  C:0997H         LINE#         36
+  C:099AH         LINE#         37
+  C:099DH         LINE#         38
+  C:09A2H         LINE#         39
+  C:09ABH         LINE#         40
+  C:09B0H         LINE#         41
+  C:09B9H         LINE#         42
+  C:09BCH         LINE#         43
+  C:09BFH         LINE#         44
+  C:09BFH         LINE#         45
+  C:09BFH         LINE#         46
+  C:09C4H         LINE#         47
+  C:09CDH         LINE#         49
+  C:09D0H         LINE#         50
+  C:09D0H         LINE#         51
+  C:09D3H         LINE#         53
+  C:09DAH         LINE#         54
+  C:09DCH         LINE#         55
+  C:09E4H         LINE#         56
+  C:09E7H         LINE#         57
+  C:09E9H         LINE#         58
+  C:09F0H         LINE#         59
+  C:09F3H         LINE#         60
+  -------         ENDPROC       MAIN
+  -------         PROC          CHECK
+  C:0800H         LINE#         67
+  C:0800H         LINE#         68
+  C:0800H         LINE#         69
+  C:0845H         LINE#         70
+  C:0845H         LINE#         71
+  C:084AH         LINE#         72
+  C:0853H         LINE#         73
+  C:0858H         LINE#         74
+  C:0861H         LINE#         75
+  C:0864H         LINE#         76
+  C:0867H         LINE#         77
+  C:086CH         LINE#         78
+  C:0870H         LINE#         79
+  C:0879H         LINE#         80
+  C:087EH         LINE#         81
+  C:0887H         LINE#         82
+  C:088AH         LINE#         83
+  C:088EH         LINE#         84
+  C:0891H         LINE#         85
+  C:0896H         LINE#         86
+  C:089AH         LINE#         87
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  06/20/2024  10:52:20  PAGE 4
+
+
+  C:08A3H         LINE#         88
+  C:08A6H         LINE#         89
+  C:08AAH         LINE#         90
+  C:08ABH         LINE#         92
+  C:08ABH         LINE#         93
+  C:08B0H         LINE#         94
+  C:08B9H         LINE#         95
+  C:08BEH         LINE#         96
+  C:08C7H         LINE#         97
+  C:08CAH         LINE#         98
+  C:08CAH         LINE#         99
+  -------         ENDPROC       CHECK
+  -------         PROC          LCD_INIT
+  C:0A88H         LINE#         102
+  C:0A88H         LINE#         103
+  C:0A88H         LINE#         104
+  C:0A8DH         LINE#         105
+  C:0A92H         LINE#         106
+  C:0A97H         LINE#         107
+  C:0A9CH         LINE#         108
+  -------         ENDPROC       LCD_INIT
+  -------         PROC          _LCDCMD
+  D:0007H         SYMBOL        val
+  C:0AB0H         LINE#         112
+  C:0AB0H         LINE#         113
+  C:0AB0H         LINE#         114
+  C:0AB2H         LINE#         115
+  C:0AB4H         LINE#         116
+  C:0AB6H         LINE#         117
+  C:0AB8H         LINE#         118
+  C:0ABBH         LINE#         119
+  C:0ABDH         LINE#         120
+  -------         ENDPROC       _LCDCMD
+  -------         PROC          _LCDDAT
+  D:0007H         SYMBOL        val
+  C:0ABEH         LINE#         123
+  C:0ABEH         LINE#         124
+  C:0ABEH         LINE#         125
+  C:0AC0H         LINE#         126
+  C:0AC2H         LINE#         127
+  C:0AC4H         LINE#         128
+  C:0AC6H         LINE#         129
+  C:0AC9H         LINE#         130
+  C:0ACBH         LINE#         131
+  -------         ENDPROC       _LCDDAT
+  -------         PROC          DELAY
+  -------         DO            
+  D:0006H         SYMBOL        v5
+  -------         ENDDO         
+  C:0AA1H         LINE#         134
+  C:0AA1H         LINE#         135
+  C:0AA1H         LINE#         137
+  C:0AAFH         LINE#         138
+  -------         ENDPROC       DELAY
+  -------         PROC          _LCDDIS
+  D:0013H         SYMBOL        s
+  -------         DO            
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  06/20/2024  10:52:20  PAGE 5
+
+
+  D:0016H         SYMBOL        w
+  -------         ENDDO         
+  C:0A65H         LINE#         141
+  C:0A6BH         LINE#         142
+  C:0A6BH         LINE#         144
+  C:0A80H         LINE#         145
+  C:0A80H         LINE#         146
+  C:0A83H         LINE#         147
+  C:0A87H         LINE#         148
+  -------         ENDPROC       _LCDDIS
+  -------         PROC          SERIAL_INIT
+  C:0ACCH         LINE#         151
+  C:0ACCH         LINE#         152
+  C:0ACCH         LINE#         153
+  C:0ACFH         LINE#         154
+  C:0AD2H         LINE#         155
+  C:0AD5H         LINE#         156
+  C:0AD7H         LINE#         157
+  -------         ENDPROC       SERIAL_INIT
+  -------         PROC          MDELAY
+  -------         DO            
+  D:0013H         SYMBOL        v6
+  D:0082H         SYMBOL        v7
+  -------         ENDDO         
+  C:0A38H         LINE#         159
+  C:0A38H         LINE#         160
+  C:0A38H         LINE#         162
+  C:0A3DH         LINE#         163
+  C:0A3DH         LINE#         164
+  C:0A56H         LINE#         165
+  C:0A64H         LINE#         166
+  -------         ENDPROC       MDELAY
+  -------         ENDMOD        CARPARK
+
+  -------         MODULE        ?C?CLDOPTR
+  C:09F5H         PUBLIC        ?C?CLDOPTR
+  -------         ENDMOD        ?C?CLDOPTR
+
+  -------         MODULE        ?C?SLCMP
+  C:0A22H         PUBLIC        ?C?SLCMP
+  -------         ENDMOD        ?C?SLCMP
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0295H BYTE (32%) *
+******************************************************************************
+
+Program Size: data=24.0 xdata=0 code=743
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

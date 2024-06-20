@@ -1,0 +1,198 @@
+C51 COMPILER V9.60.7.0   CARPARK                                                           06/20/2024 10:52:20 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE CARPARK
+OBJECT MODULE PLACED IN .\Objects\CARPARK.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE CARPARK.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\C
+                    -ARPARK.lst) TABS(2) OBJECT(.\Objects\CARPARK.obj)
+
+line level    source
+
+   1          #include<reg51.h>
+   2          
+   3          /*Motor Connection Declaration*/
+   4          sbit doorp=P2^0;  //Opening Motor Pin (P2.0) clockwise
+   5          sbit doorn=P2^1;  //Closing Motor Pin (P2.1) anti-clockwise
+   6          
+   7          /*LCD Connection Declaration*/
+   8          sbit rs=P2^5;     //Register Select Pin (P2.5)
+   9          sbit rw=P2^6;     //Read & write Pin (P2.6)
+  10          sbit en=P2^7;     //Enable Pin (P2.7)
+  11          
+  12          void lcddat(unsigned char);   //Function to send data to LCD, character by character(1 byte size)
+  13          void lcdcmd(unsigned char);   //Function to send command to LCD
+  14          void lcddis(unsigned char *); //Function to display string in LCD
+  15          
+  16          void lcd_init();              //LCD initialization
+  17          void serial_init();           //Serial Initialization for serial communication b/w RFID reader & LCD
+  18          void check();                 //Function to Check if reg. no. is present in database or not
+  19          void convert(unsigned int);   //Convert String Count to Integer Count
+  20          
+  21          /*Delay functions for LCD and Motor*/
+  22          void delay();
+  23          void mdelay();
+  24          
+  25          unsigned char rfid[10],v1;    //Variable declaration, rfid[10] is 1-D array of size 10
+  26          
+  27          /* MAIN function declaration */
+  28          void main()
+  29          {
+  30   1        doorp=doorn=0;              //Both the motors opening & closing is initialized to 0
+  31   1        serial_init();              //Serial Initialization function is called
+  32   1        lcd_init();                 //LCD initialization function is called
+  33   1        lcddis("RFID BASED CAR");   
+  34   1        lcdcmd(0xc0);               //0xc0 forces cursor to the beginning of second line
+  35   1        lcddis("PARKING SYSTEM");
+  36   1        delay();
+  37   1        delay();
+  38   1        lcdcmd(0x01);               //0x01 clears the LCD
+  39   1        lcddis("MADE BY");
+  40   1        lcdcmd(0xc0);
+  41   1        lcddis("TEAM 26");
+  42   1        delay();
+  43   1        delay();
+  44   1        while(1)
+  45   1        {
+  46   2          lcdcmd(0x01);               //LCD is cleared
+  47   2          lcddis("SWIPE YOUR CARD");  
+  48   2          //for loop is run for the no. of characters in the password one will enter
+  49   2          for(v1=0;v1<9;v1++)
+  50   2          {
+  51   3            while(RI==0);     //wait untill data is received from rfid reader to 8051
+  52   3                              //After data is received it is saved in the SBUF register
+  53   3            rfid[v1]=SBUF;    //SBUF character is saved in rfid[v1]
+  54   3            RI=0;             //RI is forced to 0 to allow next received chracter byte to be placed in SBUF
+C51 COMPILER V9.60.7.0   CARPARK                                                           06/20/2024 10:52:20 PAGE 2   
+
+  55   3            SBUF=rfid[v1];    //Re-Transmitting back to SBUF in order to see what we are typing
+  56   3            while(TI==0);     
+  57   3            TI=0;
+  58   3          }
+  59   2          check();            //Check function is called
+  60   2        }
+  61   1      }
+  62          
+  63          /*
+  64            Check Function
+  65            It matches the reg. no. entered in the terminal with one present here
+  66          */
+  67          void check()
+  68            {
+  69   1          if(rfid[0]=='1'&&rfid[1]=='8'&&rfid[2]=='B'&&rfid[3]=='E'&&rfid[4]=='C'&&rfid[5]=='2'&&rfid[6]=='0'&&rfi
+             -d[7]=='2'&&rfid[8]=='0')
+  70   1          {
+  71   2            lcdcmd(0x01);                   //0x01 clears the LCD contents
+  72   2            lcddis("ASSOCIATION MEMBER");   //String is displayed in the LCD
+  73   2            lcdcmd("0xc0");                 //0xc0 forces the cursor to beginning of second line
+*** WARNING C214 IN LINE 73 OF CARPARK.c: 'Argument': conversion: pointer to non-pointer
+  74   2            lcddis("SHUBHAM ANIKET");
+  75   2            delay();                        //Delay function is called
+  76   2            delay();
+  77   2            lcdcmd(0x01);                   //LCD is cleared
+  78   2            doorp=1;doorn=0;                //Opening door is turned high
+  79   2            lcddis("DOOR OPENING");
+  80   2            lcdcmd(0xc0);                   //Forcing cursor to beginning of second line
+  81   2            lcddis("ALLOW INSIDE");
+  82   2            mdelay();
+  83   2            doorp=0;doorn=0;                //Both the motors are now turned off
+  84   2            delay();
+  85   2            lcdcmd(0x01);                   //Clears the LCD
+  86   2            doorp=0;doorn=1;                //Closing motor is turned high
+  87   2            lcddis("DOOR CLOSING");
+  88   2            mdelay();
+  89   2            doorp=0;doorn=0;                //Both the motors are turned off again
+  90   2          }
+  91   1          else
+  92   1          {
+  93   2            lcdcmd(0x01);                   //LCD is cleared
+  94   2            lcddis("OUTSIDE PERSON");       
+  95   2            lcdcmd(0xc0);                   //Forcing cursor to second line 
+  96   2            lcddis("NO SLOT FOR YOU");
+  97   2            mdelay();                       
+  98   2          }
+  99   1        }
+ 100            
+ 101            /*LCD initialization function*/
+ 102            void lcd_init()
+ 103            {
+ 104   1          lcdcmd(0x38);     //8-bit data initialization
+ 105   1          lcdcmd(0x01);     //Clear LCD Screen
+ 106   1          lcdcmd(0x10);     //Shift cursor position to right
+ 107   1          lcdcmd(0x0c);     //Display switch command to turn on display and turn off cursor
+ 108   1          lcdcmd(0x80);     //Sets the cursor to the beginng of first line
+ 109   1        }
+ 110            
+ 111            /*LCD command function*/
+ 112            void lcdcmd(unsigned char val)
+ 113            {
+ 114   1          P1=val;
+C51 COMPILER V9.60.7.0   CARPARK                                                           06/20/2024 10:52:20 PAGE 3   
+
+ 115   1          rs=0;
+ 116   1          rw=0;
+ 117   1          en=1;
+ 118   1          delay();
+ 119   1          en=0;
+ 120   1        }
+ 121            
+ 122            /*LCD Data Function*/
+ 123            void lcddat(unsigned char val)
+ 124            {
+ 125   1          P1=val;
+ 126   1          rs=1;
+ 127   1          rw=0;
+ 128   1          en=1;
+ 129   1          delay();
+ 130   1          en=0;
+ 131   1        }
+ 132            
+ 133            /*Delay Function in ms*/
+ 134            void delay()
+ 135            {
+ 136   1          unsigned int v5;
+ 137   1          for(v5=0;v5<6000;v5++);
+ 138   1        }
+ 139            
+ 140            /*LCD Display Function*/
+ 141            void lcddis(unsigned char *s)
+ 142            {
+ 143   1          unsigned char w;          //Temp. variable
+ 144   1          for(w=0;s[w]!='\0';w++)   //Sending character by character untill s[w] hits null character
+ 145   1          {
+ 146   2            lcddat(s[w]);
+ 147   2          }
+ 148   1        }
+ 149            
+ 150            /*Serial Initialization Function*/
+ 151            void serial_init()
+ 152            {
+ 153   1          SCON=0x50;        //SCON value is loaded with 50H 
+ 154   1          TMOD=0x20;        //Timer 1, Mode 2 selected
+ 155   1          TH1=-3;           //9600 baud rate 
+ 156   1          TR1=1;            //Timer 1 is started
+ 157   1        }
+ 158            
+ 159            void mdelay()
+ 160            {
+ 161   1          unsigned int v6,v7;
+ 162   1          for(v6=0;v6<2;v6++)
+ 163   1          {
+ 164   2            for(v7=0;v7<60000;v7++);
+ 165   2          }
+ 166   1        }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    490    ----
+   CONSTANT SIZE    =    171    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     11       6
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+C51 COMPILER V9.60.7.0   CARPARK                                                           06/20/2024 10:52:20 PAGE 4   
+
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)
